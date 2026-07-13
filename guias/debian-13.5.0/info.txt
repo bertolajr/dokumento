@@ -1,0 +1,6 @@
+SO: Debian 13 "Trixie" 13.5.0 NetInst
+CPU: i3 1215U 12th
+GPU: UHD Graphics
+RAM: 12GB DDR4
+
+Essa é uma instalação clean do debian 13 pelo netinstall, com o gerenciador de janelas i3. Certifique-se de desativar todas as opções de utilitários ao final da instalação do sistema. Não queremos bloatware.

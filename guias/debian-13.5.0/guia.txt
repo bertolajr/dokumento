@@ -1,0 +1,70 @@
+# NO PRIMEIRO BOOT, É COMUM O RFKILL BLOQUEAR PLACA DE REDE (E ALGUNS OUTROS DISPOSITIVOS). NESSE CASO, O MÉTODO MAIS SIMPLES PARA RESOLVER É LIGAR A ANCORAGEM USB DO CELULAR PARA CONECTAR O COMPUTADOR AO WIFI, INSTALAR O RFKILL, DESBLOQUEAR A PLACA DE REDE, INSTALAR O NETWORK-MANAGER E ENTÃO UTILIZAR O NMTUI PARA CONECTAR AO WIFI.
+RFKILL: https://docs.kernel.org/driver-api/rfkill.html
+NETWORK-MANAGER: https://networkmanager.dev/docs/api/latest/
+	su -
+	apt update
+	apt install rfkill network-manager
+	rfkill list
+	rfkill unblock all
+	systemctl enable --now NetworkManager
+	nmtui
+	reboot
+
+# COMO A INSTALAÇÃO MÍNIMA NÃO VEM COM O PACOTE SUDO, SEGUE O PROCESSO PARA INSTALAR E DAR PERMISSÕES SUDO AO USUÁRIO
+SUDO: https://www.sudo.ws/docs/man/1.8.14/sudo.man/
+	su -
+	apt update
+	apt install sudo
+	usermod -aG sudo nome_usuario
+	su - nome_usuario
+
+# SEGUE ALGUNS FIRMWARES IMPORTANTES QUE TALVEZ NÃO VENHAM COM A INSTALAÇÃO E QUE PODEM EVITAR FUTURAS DORES DE CABEÇA
+	sudo apt install linux-image-amd64 firmware-iwlwifi firmware-linux firmware-linux-nonfree
+
+# INSTALANDO O SERVIDOR GRÁFICO E O GERENCIADOR DE JANELAS
+	sudo apt install xorg lightdm lightdm-gtk-greeter i3
+	sudo systemctl enable --now lightdm
+
+# ESSES PACOTES SÃO PRÉ-REQUISITOS DO FLATPAK, QUE SERÁ O GERENCIADOR DE PACOTES QUE USAREMOS (ALÉM DO APT)
+	sudo apt install ca-certificates apt-transport-https
+
+# INSTALANDO O NAVEGADOR (FIREFOX) VIA GERENCIADOR DE PACOTES FLATPAK
+	sudo apt install flatpak
+	sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+	sudo flatpak install flathub org.mozilla.firefox
+
+# PARA FAZER O ÁUDIO FUNCIONAR
+	sudo apt install pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber
+	systemctl --user --now enable wireplumber
+	wpctl status  # VERIFIQUE O ID DO DISPOSITIVO DE ÁUDIO #
+	wpctl set-default ID
+	alsamixer
+
+# PARA AUTENTICAÇÃO GRÁFICA (ALGUMAS FERRAMENTAS PRECISAM, COMO O VIRT-MANAGER)
+    sudo apt install lxpolkit
+# ALÉM DISSO, ADICIONE AO FINAL DE ~/.config/i3/config A SEGUINTE LINHA
+    exec --no-startup-id lxpolkit
+# E ENTÃO DÊ reboot
+
+# PARA UTILIZAR A VIRTUALIZAÇÃO DO KERNEL (KVM), AS BIBLIOTECAS ABAIXO SÃO NECESSÁRIAS
+	sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virt-manager
+	virt-manager
+
+# PARA FAZER O TAP-TO-CLICK DO TOUCHPAD FUNCIONAR E CONFIGURAR A ROLAGEM NATURAL, CRIE O ARQUIVO /etc/X11/xorg.conf.d/40-touchpad.conf E ADICIONE O CÓDIGO ABAIXO
+	Section "InputClass"
+		Identifier "libinput touchpad catchall"
+		MatchIsTouchpad "on"
+		MatchDevicePath "/dev/input/event*"
+		Driver "libinput"
+		Option "Tapping" "on"
+		Option "NaturalScrolling" "true"
+	EndSection
+# DEPOIS, DÊ reboot OU sudo systemctl restart display-manager
+
+# PARA INSTALAR O ROFI (GERENCIADOR DE APLICATIVOS)
+	sudo apt install rofi
+# APÓS ISSO, VÁ ATÉ ~/.config/i3/config, COMENTE A LINHA bindsym $mod+d exec dmenu_run E ADICIONE ABAIXO A LINHA
+	bindsym $mod+d exec --no-startup-id rofi -show drun
+
+# PARA INSTALAR O GERENCIADOR DE ARQUIVOS THUNAR
+	sudo apt install thunar
