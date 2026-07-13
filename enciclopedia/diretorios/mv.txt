@@ -1,0 +1,5 @@
+1. PARA MOVER TODOS OS ARQUIVOS DE UM DIRETÓRIO PARA O DIRETÓRIO ANTERIOR
+    shopt -s dotglob   # POR PADRÃO, O * NÃO LÊ ARQUIVOS OCULTOS
+    mv diretorio/* .
+    shopt -u dotglob
+    rm -rf diretorio/
