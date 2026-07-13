@@ -1,6 +1,4 @@
-# NO PRIMEIRO BOOT, É COMUM O RFKILL BLOQUEAR PLACA DE REDE (E ALGUNS OUTROS DISPOSITIVOS). NESSE CASO, O MÉTODO MAIS SIMPLES PARA RESOLVER É LIGAR A ANCORAGEM USB DO CELULAR PARA CONECTAR O COMPUTADOR AO WIFI, INSTALAR O RFKILL, DESBLOQUEAR A PLACA DE REDE, INSTALAR O NETWORK-MANAGER E ENTÃO UTILIZAR O NMTUI PARA CONECTAR AO WIFI.
-RFKILL: https://docs.kernel.org/driver-api/rfkill.html
-NETWORK-MANAGER: https://networkmanager.dev/docs/api/latest/
+1. NO PRIMEIRO BOOT, É COMUM O RFKILL BLOQUEAR PLACA DE REDE (E ALGUNS OUTROS DISPOSITIVOS). NESSE CASO, O MÉTODO MAIS SIMPLES PARA RESOLVER É LIGAR A ANCORAGEM USB DO CELULAR PARA CONECTAR O COMPUTADOR AO WIFI, INSTALAR O RFKILL, DESBLOQUEAR A PLACA DE REDE, INSTALAR O NETWORK-MANAGER E ENTÃO UTILIZAR O NMTUI PARA CONECTAR AO WIFI.
 	su -
 	apt update
 	apt install rfkill network-manager
@@ -10,47 +8,46 @@ NETWORK-MANAGER: https://networkmanager.dev/docs/api/latest/
 	nmtui
 	reboot
 
-# COMO A INSTALAÇÃO MÍNIMA NÃO VEM COM O PACOTE SUDO, SEGUE O PROCESSO PARA INSTALAR E DAR PERMISSÕES SUDO AO USUÁRIO
-SUDO: https://www.sudo.ws/docs/man/1.8.14/sudo.man/
+2. COMO A INSTALAÇÃO MÍNIMA NÃO VEM COM O PACOTE SUDO, SEGUE O PROCESSO PARA INSTALAR E DAR PERMISSÕES SUDO AO USUÁRIO
 	su -
 	apt update
 	apt install sudo
 	usermod -aG sudo nome_usuario
 	su - nome_usuario
 
-# SEGUE ALGUNS FIRMWARES IMPORTANTES QUE TALVEZ NÃO VENHAM COM A INSTALAÇÃO E QUE PODEM EVITAR FUTURAS DORES DE CABEÇA
+3. SEGUE ALGUNS FIRMWARES IMPORTANTES QUE TALVEZ NÃO VENHAM COM A INSTALAÇÃO E QUE PODEM EVITAR FUTURAS DORES DE CABEÇA
 	sudo apt install linux-image-amd64 firmware-iwlwifi firmware-linux firmware-linux-nonfree
 
-# INSTALANDO O SERVIDOR GRÁFICO E O GERENCIADOR DE JANELAS
+4. INSTALANDO O SERVIDOR GRÁFICO E O GERENCIADOR DE JANELAS
 	sudo apt install xorg lightdm lightdm-gtk-greeter i3
 	sudo systemctl enable --now lightdm
 
-# ESSES PACOTES SÃO PRÉ-REQUISITOS DO FLATPAK, QUE SERÁ O GERENCIADOR DE PACOTES QUE USAREMOS (ALÉM DO APT)
+5. ESSES PACOTES SÃO PRÉ-REQUISITOS DO FLATPAK, QUE SERÁ O GERENCIADOR DE PACOTES QUE USAREMOS (ALÉM DO APT)
 	sudo apt install ca-certificates apt-transport-https
 
-# INSTALANDO O NAVEGADOR (FIREFOX) VIA GERENCIADOR DE PACOTES FLATPAK
+6. INSTALANDO O NAVEGADOR (FIREFOX) VIA GERENCIADOR DE PACOTES FLATPAK
 	sudo apt install flatpak
 	sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 	sudo flatpak install flathub org.mozilla.firefox
 
-# PARA FAZER O ÁUDIO FUNCIONAR
-	sudo apt install pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber
+7. PARA FAZER O ÁUDIO FUNCIONAR
+	sudo apt install pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber alsa-utils
 	systemctl --user --now enable wireplumber
-	wpctl status  # VERIFIQUE O ID DO DISPOSITIVO DE ÁUDIO #
+	wpctl status
 	wpctl set-default ID
 	alsamixer
 
-# PARA AUTENTICAÇÃO GRÁFICA (ALGUMAS FERRAMENTAS PRECISAM, COMO O VIRT-MANAGER)
+8. PARA AUTENTICAÇÃO GRÁFICA (ALGUMAS FERRAMENTAS PRECISAM, COMO O VIRT-MANAGER)
     sudo apt install lxpolkit
-# ALÉM DISSO, ADICIONE AO FINAL DE ~/.config/i3/config A SEGUINTE LINHA
+ALÉM DISSO, ADICIONE AO FINAL DE ~/.config/i3/config A SEGUINTE LINHA
     exec --no-startup-id lxpolkit
-# E ENTÃO DÊ reboot
+E ENTÃO DÊ reboot
 
-# PARA UTILIZAR A VIRTUALIZAÇÃO DO KERNEL (KVM), AS BIBLIOTECAS ABAIXO SÃO NECESSÁRIAS
+9. PARA UTILIZAR A VIRTUALIZAÇÃO DO KERNEL (KVM), AS BIBLIOTECAS ABAIXO SÃO NECESSÁRIAS
 	sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virt-manager
 	virt-manager
 
-# PARA FAZER O TAP-TO-CLICK DO TOUCHPAD FUNCIONAR E CONFIGURAR A ROLAGEM NATURAL, CRIE O ARQUIVO /etc/X11/xorg.conf.d/40-touchpad.conf E ADICIONE O CÓDIGO ABAIXO
+10. PARA FAZER O TAP-TO-CLICK DO TOUCHPAD FUNCIONAR E CONFIGURAR A ROLAGEM NATURAL, CRIE O ARQUIVO /etc/X11/xorg.conf.d/40-touchpad.conf E ADICIONE O CÓDIGO ABAIXO
 	Section "InputClass"
 		Identifier "libinput touchpad catchall"
 		MatchIsTouchpad "on"
@@ -59,12 +56,30 @@ SUDO: https://www.sudo.ws/docs/man/1.8.14/sudo.man/
 		Option "Tapping" "on"
 		Option "NaturalScrolling" "true"
 	EndSection
-# DEPOIS, DÊ reboot OU sudo systemctl restart display-manager
+DEPOIS, DÊ reboot OU sudo systemctl restart display-manager
 
-# PARA INSTALAR O ROFI (GERENCIADOR DE APLICATIVOS)
+11. PARA INSTALAR O ROFI (GERENCIADOR DE APLICATIVOS)
 	sudo apt install rofi
-# APÓS ISSO, VÁ ATÉ ~/.config/i3/config, COMENTE A LINHA bindsym $mod+d exec dmenu_run E ADICIONE ABAIXO A LINHA
+APÓS ISSO, VÁ ATÉ ~/.config/i3/config, COMENTE A LINHA bindsym $mod+d exec dmenu_run E ADICIONE ABAIXO A LINHA
 	bindsym $mod+d exec --no-startup-id rofi -show drun
 
-# PARA INSTALAR O GERENCIADOR DE ARQUIVOS THUNAR
+12. PARA INSTALAR O GERENCIADOR DE ARQUIVOS THUNAR
 	sudo apt install thunar
+
+DOCUMENTAÇÕES:
+[1] RFKILL: https://docs.kernel.org/driver-api/rfkill.html
+[1] NETWORK-MANAGER: https://networkmanager.dev/docs/api/latest/
+[2] SUDO: https://www.sudo.ws/docs/man/1.8.14/sudo.man/
+[3] IWLWIFI: https://wireless.docs.kernel.org/en/latest/en/users/drivers/iwlwifi.html
+[4] XORG: https://www.x.org/Documentation/
+[4] LIGHTDM: https://wiki.debian.org/LightDM
+[4] I3: https://i3wm.org/docs/userguide.html
+[5] FLATPAK: https://docs.flatpak.org/en/latest/
+[7] PIPEWIRE: https://docs.pipewire.org/
+[7] WIREPLUMBER: https://pipewire.pages.freedesktop.org/wireplumber/
+[7] ALSAMIXER: https://linux.die.net/man/1/alsamixer
+[8] POLKIT: https://packages.debian.org/sid/lxpolkit
+[9] QEMU: https://www.qemu.org/documentation/
+[9] VIRT-MANAGER: https://virt-manager.org/documentation.html
+[11] ROFI: https://davatorium.github.io/rofi/
+[12] THUNAR: https://docs.xfce.org/xfce/thunar/start
