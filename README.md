@@ -2,7 +2,7 @@
 ### O que é?
 O **dokumento** é um guia de configuração de distribuições *linux* recém instaladas.
 Ele visa listar e explicar os processos de configuração iniciais, até chegarmos em um ambiente *linux* organizado, bonito, funcional e produtivo.
-Além disso, o **dokumento** referencia a documentação original das ferramentas utilizadas, para que o usuário saiba onde ir caso não supra suas necessidades com esse guia.
+Além disso, o **dokumento** contém uma enciclopédia, listando e explicando cada ferramenta individualmente, além de referenciar a documentação original da mesma. Assim, caso o usuário não seja suprido pelo guia, ele saiba para onde ir.
 
 ### Como usar?
 O **dokumento** é pensado para ser a primeira coisa que o usuário baixa após terminar uma instalação.
@@ -14,8 +14,9 @@ Alternativamente, mas igualmente válido, você também pode mover o **dokumento
 
 Ele é desenvolvido para ser lido via terminal, e por isso optei pela simplicidade do *.txt*, sem nenhum tipo de formatação. Portanto, após clonar, basta utilizar o `cat` para visualizar o conteúdo desejado.
 ```bash
-cat ~/dokumento/nome_do_arquivo.txt
+cat ~/dokumento/nome_do_arquivo.txt | less
 ```
+Além disso, por conter também uma enciclopédia, o **dokumento** não se aplica somente à configuração inicial. É interessante mantê-lo salvo após a instalação, para que você possa consultá-lo a qualquer momento.
 
 ### Motivação para o desenvolvimento do dokumento
 Quando instalamos uma distribuição *linux*, devemos configurá-la. Entretanto, as ferramentas que utilizamos neste processo geralmente são usadas somente nesse momento, não sendo necessárias até a próxima vez em que instalarmos uma nova distribuição. Com isso, facilmente nos esquecemos destes processos.
